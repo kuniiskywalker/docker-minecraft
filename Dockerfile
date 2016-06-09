@@ -41,4 +41,4 @@ EXPOSE 25565
 VOLUME ["/data"]
 
 # /start runs it.
-CMD    ["/start"]
+CMD    ["/start", "1.10"]

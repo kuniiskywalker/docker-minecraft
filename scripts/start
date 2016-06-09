@@ -6,10 +6,19 @@
 # Updated: Dec 14th, 2014
 # -----------------------------------------------------------------------------
 
+if [ $# -ne 1 ]; then
+  echo "Invalid parameter. Please specify the version." 1>&2
+  exit 1
+fi
 
-if [ ! -f /data/minecraft_server.jar ]
-then
-    curl "https://s3.amazonaws.com/Minecraft.Download/versions/1.9.4/minecraft_server.1.9.4.jar" -o /data/minecraft_server.jar
+use_version=$1
+
+active_version=`cat /data/version.txt`
+
+if [ ! -f /data/minecraft_server.jar -o "$use_version" != "$active_version" ]; then
+    url="https://s3.amazonaws.com/Minecraft.Download/versions/${use_version}/minecraft_server.${use_version}.jar"
+    curl $url -o /data/minecraft_server.jar
+    echo $use_version > /data/version.txt
 fi
 
 if [ ! -f /data/eula.txt ]
